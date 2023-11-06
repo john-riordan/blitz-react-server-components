@@ -1,0 +1,5 @@
+.matchHistory ol {
+  display: grid;
+  gap: var(--gap);
+  list-style: none;
+}
