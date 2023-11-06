@@ -59,7 +59,7 @@ async function Profile({ params }) {
           </h4>
         </Card>
         <div className={styles.matchHistory}>
-          <Suspense fallback={<p>Loading match history...</p>}>
+          <Suspense fallback={<MatchHistory.Loading />}>
             <MatchHistory region={region} puuid={puuid} />
           </Suspense>
         </div>

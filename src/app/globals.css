@@ -28,4 +28,5 @@ main {
   margin-inline: auto;
   width: 100%;
   max-width: 1016px;
+  padding: var(--gap);
 }
