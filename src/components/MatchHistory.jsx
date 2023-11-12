@@ -1,20 +1,24 @@
+import { Suspense } from 'react';
 import { leagueMatchlist } from '../api/matches';
 
 import Match, { MatchLoading } from './Match';
 import styles from './MatchHistory.module.css';
 
-async function MatchHistory({ region, puuid }) {
+const PAGE_SIZE = 20;
+
+async function MatchHistory({ region, puuid, page }) {
   const fetchOptions = {
+    cache: 'no-store',
     next: {
-      revalidate: 0, // 15 mins
-      tags: [region, puuid],
+      tags: ['matchlist', region, puuid],
     },
   };
 
   const req = await fetch(leagueMatchlist({ region, puuid }), fetchOptions);
   const res = await req.json();
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // fake slow response
+  await new Promise((resolve) => setTimeout(resolve, 500));
 
   if (!res?.data?.matchlist?.matches) return <div>Error</div>;
 
@@ -24,12 +28,18 @@ async function MatchHistory({ region, puuid }) {
     },
   } = res;
 
+  const pageStart = (page - 1) * PAGE_SIZE;
+  const pageEnd = page * PAGE_SIZE - 1;
+  const pageOfMatches = matches.slice(pageStart, pageEnd);
+
   return (
     <div className={styles.matchHistory}>
       <ol>
-        {matches.map((match) => (
+        {pageOfMatches.map((match) => (
           <li key={match.id}>
-            <Match region={region} matchId={match.id} />
+            <Suspense fallback={<MatchLoading />}>
+              <Match matchId={match.id} puuid={puuid} />
+            </Suspense>
           </li>
         ))}
       </ol>

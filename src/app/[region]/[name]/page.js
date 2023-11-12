@@ -8,9 +8,10 @@ import Card from '../../../components/Card';
 import MatchHistory from '../../../components/MatchHistory';
 import styles from './page.module.css';
 
-async function Profile({ params }) {
+async function Profile({ params, searchParams }) {
   const region = params.region;
   const name = params.name;
+  const page = searchParams.page || '1';
 
   const req = await fetch(leagueProfile({ region, name }));
   const res = await req.json();
@@ -60,7 +61,7 @@ async function Profile({ params }) {
         </Card>
         <div className={styles.matchHistory}>
           <Suspense fallback={<MatchHistory.Loading />}>
-            <MatchHistory region={region} puuid={puuid} />
+            <MatchHistory region={region} puuid={puuid} page={page} />
           </Suspense>
         </div>
       </div>

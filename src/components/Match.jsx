@@ -1,47 +1,51 @@
-'use client';
-
-import { useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 import Card from './Card';
+import { champPortrait } from '../api/assets';
 import styles from './Match.module.css';
 
-function Match({ region, matchId }) {
-  const ref = useRef(null);
+import { leagueMatch } from '../api/matches';
 
-  useEffect(() => {
-    const options = {};
-    const node = ref.current;
+async function Match({ matchId, puuid: localPlayerPuuid }) {
+  const [region, id] = matchId.split('_');
+  const req = await fetch(leagueMatch({ region, matchId: id }));
+  const res = await req.json();
 
-    function callback(entries, observer) {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Target element is in view
-          // Do something when the element is in view
-          console.log(matchId, ' is in view');
-        }
-      });
-    }
+  // fake slow response
+  // await new Promise((resolve) => setTimeout(resolve, Math.random() * 3000));
 
-    const observer = new IntersectionObserver(callback, options);
+  if (!res?.data?.match)
+    return <Card className={styles.match}>Error loading match</Card>;
 
-    if (node) {
-      observer.observe(node);
-    }
+  const {
+    data: {
+      match: {
+        info: { participants, teams },
+      },
+    },
+  } = res;
 
-    return () => {
-      observer.unobserve(node);
-    };
-  }, [ref, matchId]);
+  const localPlayer = participants.find((p) => p.puuid === localPlayerPuuid);
+  const didWin = teams.find((t) => t.teamId == localPlayer.teamId)?.win;
 
   return (
-    <Card cardRef={ref} className={styles.match}>
-      {matchId}
+    <Card className={styles.match}>
+      <Image
+        src={champPortrait(localPlayer.championId)}
+        width='60'
+        height='60'
+        alt={localPlayerPuuid}
+        style={{ objectViewBox: 'inset(10% 10% 10% 10%)', borderRadius: 5 }}
+      />
+      <h4 style={{ color: didWin ? '#00b1ff' : '#ff0043' }}>
+        {didWin ? 'Victory' : 'Defeat'}
+      </h4>
     </Card>
   );
 }
 
+export default Match;
+
 export function MatchLoading() {
   return <Card className={styles.match} />;
 }
-
-export default Match;
