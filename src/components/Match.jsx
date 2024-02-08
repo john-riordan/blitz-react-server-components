@@ -8,11 +8,12 @@ import { leagueMatch } from '../api/matches';
 
 async function Match({ matchId, puuid: localPlayerPuuid }) {
   const [region, id] = matchId.split('_');
-  const req = await fetch(leagueMatch({ region, matchId: id }));
+  const url = leagueMatch({ region, matchId: id });
+  const req = await fetch(url);
   const res = await req.json();
 
   // fake slow response
-  // await new Promise((resolve) => setTimeout(resolve, Math.random() * 3000));
+  await new Promise((resolve) => setTimeout(resolve, Math.random() * 500));
 
   if (!res?.data?.match)
     return <Card className={styles.match}>Error loading match</Card>;

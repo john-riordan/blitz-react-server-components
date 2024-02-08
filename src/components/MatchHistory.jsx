@@ -8,13 +8,14 @@ const PAGE_SIZE = 20;
 
 async function MatchHistory({ region, puuid, page }) {
   const fetchOptions = {
-    cache: 'no-store',
     next: {
-      tags: ['matchlist', region, puuid],
+      revalidate: 900, // 15mins
+      // tags: ['matchlist', region, puuid],
     },
   };
 
-  const req = await fetch(leagueMatchlist({ region, puuid }), fetchOptions);
+  const url = leagueMatchlist({ region, puuid });
+  const req = await fetch(url, fetchOptions);
   const res = await req.json();
 
   // fake slow response
