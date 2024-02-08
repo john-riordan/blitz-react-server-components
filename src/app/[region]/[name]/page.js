@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
 
-import Image from 'next/image';
-
 import { leagueProfile } from '../../../api/profile';
 import { profileIcon, rankIcon } from '../../../api/assets';
 import Card from '../../../components/Card';
@@ -44,7 +42,7 @@ async function Profile({ params, searchParams }) {
   return (
     <>
       <header className={styles.header}>
-        <Image
+        <img
           src={profileIcon(profileIconId)}
           width='80'
           height='80'
@@ -57,7 +55,7 @@ async function Profile({ params, searchParams }) {
       </header>
       <div className={styles.columns}>
         <Card className={styles.rank}>
-          <Image
+          <img
             src={rankIcon(soloQueueRank.tier)}
             width='60'
             height='60'
