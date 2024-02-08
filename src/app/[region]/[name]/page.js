@@ -15,8 +15,8 @@ async function Profile({ params, searchParams }) {
 
   const fetchOptions = {
     next: {
-      revalidate: 3600, // 1hr
-      tags: ['profile', region, name],
+      revalidate: 1800, // 30mins
+      // tags: ['profile', region, name],
     },
   };
 
@@ -33,6 +33,7 @@ async function Profile({ params, searchParams }) {
         summonerLevel,
         profileIconId,
         latestRanks = [],
+        riotAccount,
       },
     },
   } = res;
@@ -50,7 +51,8 @@ async function Profile({ params, searchParams }) {
           alt={summonerName}
         />
         <h1>
-          {summonerName} (Level {summonerLevel})
+          {riotAccount?.gameName} #{riotAccount?.tagLine} (Level {summonerLevel}
+          )
         </h1>
       </header>
       <div className={styles.columns}>
