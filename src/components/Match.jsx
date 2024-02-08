@@ -13,7 +13,7 @@ async function Match({ matchId, puuid: localPlayerPuuid }) {
   const res = await req.json();
 
   // fake slow response
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * 500));
+  // await new Promise((resolve) => setTimeout(resolve, Math.random() * 500));
 
   if (!res?.data?.match)
     return <Card className={styles.match}>Error loading match</Card>;

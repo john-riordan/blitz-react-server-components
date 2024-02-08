@@ -19,7 +19,7 @@ async function MatchHistory({ region, puuid, page }) {
   const res = await req.json();
 
   // fake slow response
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  // await new Promise((resolve) => setTimeout(resolve, 500));
 
   if (!res?.data?.matchlist?.matches) return <div>Error</div>;
 
