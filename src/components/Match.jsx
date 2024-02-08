@@ -1,5 +1,3 @@
-import Image from 'next/image';
-
 import Card from './Card';
 import { champPortrait } from '../api/assets';
 import styles from './Match.module.css';
@@ -31,7 +29,7 @@ async function Match({ matchId, puuid: localPlayerPuuid }) {
 
   return (
     <Card className={styles.match}>
-      <Image
+      <img
         src={champPortrait(localPlayer.championId)}
         width='60'
         height='60'
