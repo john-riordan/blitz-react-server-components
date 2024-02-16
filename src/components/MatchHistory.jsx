@@ -21,7 +21,8 @@ async function MatchHistory({ region, puuid, page }) {
   // fake slow response
   // await new Promise((resolve) => setTimeout(resolve, 500));
 
-  if (!res?.data?.matchlist?.matches) return <div>Error</div>;
+  if (!res?.data?.matchlist?.matches)
+    return <div>Error loading match list</div>;
 
   const {
     data: {

@@ -12,14 +12,13 @@ async function Profile({ params, searchParams }) {
   const page = searchParams.page || '1';
 
   const fetchOptions = {
-    next: {
-      revalidate: 1800, // 30mins
-      // tags: ['profile', region, name],
-    },
+    cache: 'no-store', // Disable cache
   };
 
   const req = await fetch(leagueProfile({ region, name }), fetchOptions);
   const res = await req.json();
+
+  console.log(res);
 
   if (!res?.data?.leagueProfile) return <div>🚨 Error loading profile 🚨</div>;
 
